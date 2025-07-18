@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced App Download</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066ff;
+            --secondary: #00a1ff;
+            --accent: #00f7ff;
+            --silver: rgba(224, 229, 236, 0.5);
+            --dark: #0a0a1a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .logo {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 102, 255, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: 1px solid rgba(0, 102, 255, 0.05);
+            animation: cardEntrance 0.8s ease-out;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 25px 50px rgba(0, 102, 255, 0.2);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            background: linear-gradient(90deg, rgba(0, 102, 255, 0.03), rgba(0, 161, 255, 0.03));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                var(--silver) 50%, 
+                transparent 100%);
+            animation: shine 3s infinite;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+            transition: transform 0.3s;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .app-card:hover .app-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .app-info {
+            flex: 1;
+            z-index: 1;
+        }
+
+        .app-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-about {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .advance-tag {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+            z-index: 2;
+            animation: pulse 2s infinite;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.4) 45%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 102, 255, 0.4);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc, #00aced);
+            color: white;
+        }
+
+        .btn-telegram:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 172, 237, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 102, 255, 0.1);
+            color: #666;
+            font-size: 0.9rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Advanced Animations */
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            20% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(0, 247, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 247, 255, 0); }
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .app-icon {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .app-actions {
+                flex-direction: column;
+                padding: 0 1.5rem 1.5rem 1.5rem;
+            }
+
+            .advance-tag {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .logo img {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <header>
+        </header>
+
+        <div class="app-card">
+            <span class="advance-tag">ADVANCE</span>
+            <div class="app-header">
+                <div class="app-icon">
+                    <img src="logo.png" alt="App Icon">
+                </div>
+                <div class="app-info">
+                    <h2 class="app-title">Win Max V4.9.apk</h2>
+                    <p class="app-about">
+                        Experience the ultimate game predictor with extra features 💯 🫂. 
+                        turn your luck into fortune 🔮 🤞 , 
+                        powerful customization options, and  smooth performance, loss recovery system added..
+                    </p>
+                </div>
+            </div>
+            <div class="app-actions">
+                <button class="btn btn-download" onclick="downloadApp()">
+                    <i class="fas fa-download"></i> Download Now
+                </button>
+                <button class="btn btn-telegram" onclick="joinTelegram()">
+                    <i class="fab fa-telegram"></i> Join Channel
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Advanced App Platform</p>
+        </footer>
+    </div>
+
+    <script>
+        function downloadApp() {
+            // Replace with actual download link
+            alert('Download started! Enjoy the advanced features.');
+            // window.location.href = 'Win Max V4.9.apk';
+        }
+
+        function joinTelegram() {
+            // Replace with your Telegram channel link
+            window.open('https://t.me/EarningScripter1', '_blank');
+        }
+
+        // Create floating particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration between 10s and 30s
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
